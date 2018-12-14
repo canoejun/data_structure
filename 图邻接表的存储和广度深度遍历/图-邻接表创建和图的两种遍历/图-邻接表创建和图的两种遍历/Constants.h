@@ -15,13 +15,13 @@
 typedef struct node{
     int index;//数组中的位置
     struct node *next;//头结点
-    int flag;
 } ArcNode;
 
 //数组中的元素
 typedef struct{
     char symbol;//表示的符号
     int index;//位置
+    int flag;//用于深度和广度搜索
     ArcNode * firstStart;
 }ListElement;
 typedef struct{

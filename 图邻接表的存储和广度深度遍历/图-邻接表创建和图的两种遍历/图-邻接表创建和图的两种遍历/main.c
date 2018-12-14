@@ -22,15 +22,57 @@ int main(int argc, const char * argv[]) {
         {'H','7','6','5','4','3','#'},
     };
     
-//    深度遍历
-    Graphic graph1,graph2;
-    createGraph(&graph1, a);
-    printGraphList(graph1);
-    DFSTraverseGraph(&graph1, 0);
+    char b[GraphicSize][10] = {
+        {'A','0','2','1','#'},
+        {'B','1','3','0','#'},
+        {'C','2','3','0','#'},
+        {'D','3','2','1','#'},
+        {'E','4','7','5','#'},
+        {'F','5','6','4','#'},
+        {'G','6','7','5','#'},
+        {'H','7','6','4','#'},
+    };
+#pragma mark ------ 连通图 ------
+    printf("连通图\n");
+    //    深度遍历
+    Graphic graph;
+    createGraph(&graph, a);
+    printGraphList(graph);
+    printf("深：");
+    DFSTraverseGraph(&graph, 0);
+
+    //    将邻接表中的flag值进行重置
+    for (int i = 0 ; i < GraphicSize; i++) {
+        (graph.graph+i)->flag = 1;
+    }
+
+    printf("\n");
+    //    广度遍历
+    printf("广：");
+    BFSTraverseGraph(&graph, 0);
     
-//    广度遍历
-    createGraph(&graph2, a);
-    BFSTraverseGraph(&graph2, 0);
+
+#pragma mark ------ 非连通图 ------
+    printf("\n非连通图\n");
+    //    深度遍历
+    Graphic graph1;
+    createGraph(&graph1, b);
+    printGraphList(graph1);
+    printf("深：");
+    DFSTraverseGraph(&graph1, 0);
+    DFSTraverseGraph(&graph1, 4);
+
+
+    //    将邻接表中的flag值进行重置
+    for (int i = 0 ; i < GraphicSize; i++) {
+        (graph1.graph+i)->flag = 1;
+    }
+
+    printf("\n");
+    //    广度遍历
+    printf("广：");
+    BFSTraverseGraph(&graph1, 0);
+    printf("\n");
     
     return 0;
 }

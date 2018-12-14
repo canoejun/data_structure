@@ -9,6 +9,7 @@
 #include "Graphic.h"
 #include <stdlib.h>
 
+//图的创建
 void createGraph(Graphic* a,char elementList[][10]){
     ListElement * tempListElement;int j;
     for (int i = 0; i < GraphicSize; i++) {
@@ -22,7 +23,7 @@ void createGraph(Graphic* a,char elementList[][10]){
         }
         tempListElement->firstStart = q;
         tempListElement->firstStart->index = tempListElement->index = elementList[i][1]-'0';
-        tempListElement->firstStart->flag = 1;
+        tempListElement->flag = 1;
         tempListElement->firstStart->next = NULL;
         j = 2;
         //        遍历数组，将邻接表内容存入
@@ -30,7 +31,6 @@ void createGraph(Graphic* a,char elementList[][10]){
             //            头插法插入元素
             ArcNode * p = (ArcNode *)malloc(sizeof(ArcNode));
             p->index = elementList[i][j]-'0';
-            p->flag = 1;
             p->next = tempListElement->firstStart->next;
             tempListElement->firstStart->next = p;
             j++;
@@ -55,8 +55,8 @@ void printGraphList(Graphic  graph){
 void DFSTraverseGraph(Graphic* graph,int index){
     ListElement * tempListElement = graph->graph+index;
     ArcNode * p = tempListElement->firstStart;
-    if (p->flag) {
-        p->flag = 0;
+    if (tempListElement->flag) {
+        tempListElement->flag = 0;
         printf("%c ",(graph->graph+p->index)->symbol);
         while (p) {
             //    如果这个这个数组元素没有被访问过，那么就访问
@@ -82,7 +82,6 @@ void BFSTraverseGraph(Graphic* graph,int index){
             deQueuelink(graph, &link);
         }
     }
-    
 }
 #pragma mark ------ 队列的操作 ------
 //创建队列
@@ -99,7 +98,6 @@ void enQueuelink(QueueLink *link,ArcNode * node){
     if (!p) {
         EXIT_FAILURE;
     }
-    p->flag = node->flag;
     p->index = node->index;
     p->next = NULL;
     link->rear->next = p;
@@ -112,9 +110,9 @@ void deQueuelink(Graphic* graph,QueueLink *link){
     }
     ArcNode * p = link->head->next;
 //    判断在邻接表中的flag是否为遍历过的
-    if ((graph->graph+p->index)->firstStart->flag) {
+    if ((graph->graph+p->index)->flag) {
         printf("%c ",(graph->graph+p->index)->symbol);
-        (graph->graph+p->index)->firstStart->flag = 0;
+        (graph->graph+p->index)->flag = 0;
     }
     
     link->head->next = p->next;
